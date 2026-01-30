@@ -12,7 +12,7 @@ class MySQLConnect(ConnProvider):
             user=os.getenv("PORTGEN_USER"),
             database=os.getenv("PORTGEN_DB"),
             password=os.getenv("PORTGEN_PWD"),
-            port=os.getenv("PORTGEN_PORT"),
+            port=int(os.getenv("PORTGEN_PORT")),
         )
         return conn
         

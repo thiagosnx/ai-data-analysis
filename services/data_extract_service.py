@@ -5,7 +5,7 @@ class DataExtractService:
     def extract_data_default(self):
         conn = MySQLConnect()
         query = """
-select 
+select distinct
 	p.matricula,
 	p.nome ,
 	p.email ,
@@ -20,4 +20,6 @@ where 1=1
 and pg.status = 'approved';
 """
         df = pd.read_sql(query, conn.get_conn())
+
+        conn.get_conn().close
         return df
