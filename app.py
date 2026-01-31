@@ -5,20 +5,10 @@ import pandas_gbq as bq
 from services.data_extract_service import DataExtractService 
 from services.data_transformation_service import DataTransformationService 
 
+extract_service = DataExtractService()
 
-
-# file = st.file_uploader(
-#     "Escolha um arquivo",
-#     type=["csv", "parquet", "xlsx"]
-# )
-
-from google.cloud import bigquery
-
-client = bigquery.Client.from_service_account_json(
-    "config.json"
-)
-
-query = """
+# gbq
+query_gbq = """
     select distinct
         nome, 
         marca, 
@@ -29,6 +19,7 @@ query = """
     where 1=1
     and preco_atual < preco_real
     and disponivel = 1
+    
     group by 
         nome, 
         marca, 
@@ -36,18 +27,24 @@ query = """
         preco_real
     order by preco_atual asc
 """
+raw = extract_service.extract_data_gbq(query_gbq, "eco-avenue-461519-f8")
 
-query_job = client.query(query)
-rows = query_job.result()
-
-df = bq.read_gbq(
-    query,
-    project_id="eco-avenue-461519-f8",
-    dialect="standard"
-)
+st.write(raw)
 
 
-# raw = DataExtractService(file)
-# data = DataTransformationService()
-# st.write(data.transformation_data_default(raw))
-st.write(df)
+
+query_mysql = """
+		select distinct
+		p.matricula,
+		p.nome ,
+		p.email ,
+		p.estado,
+		m.nome_modelo, 
+		m.preco,
+		p.created_at 
+		from portgen.portfolios p
+		join pagamentos pg on pg.id = p.id_pgto
+		join modelos m on m.id = p.id_modelo 
+		where 1=1
+		and pg.status = 'approved';
+		"""

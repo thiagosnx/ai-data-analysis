@@ -4,3 +4,6 @@
 roadmap.md
 
 config.json
+config_gbq.json
+
+*.pyc
