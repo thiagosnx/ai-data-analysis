@@ -42,27 +42,29 @@ query_gbq = """
     from agg; 
 
 """
-extract_service = DataExtractService(query=query_gbq)
+extract_gbq = DataExtractService(query=query_gbq)
 
-raw = extract_service.extract_data_gbq(project_id="eco-avenue-461519-f8")
+raw_gbq = extract_gbq.extract_data_gbq(project_id="eco-avenue-461519-f8")
 
 
-# query_mysql = """
-# 		select distinct
-# 		p.matricula,
-# 		p.nome ,
-# 		p.email ,
-# 		p.estado,
-# 		m.nome_modelo, 
-# 		m.preco,
-# 		p.created_at 
-# 		from portgen.portfolios p
-# 		join pagamentos pg on pg.id = p.id_pgto
-# 		join modelos m on m.id = p.id_modelo 
-# 		where 1=1
-# 		and pg.status = 'approved';
-# 		"""
+query_mysql = """
+		select distinct
+		p.matricula,
+		p.nome ,
+		p.email ,
+		p.estado,
+		m.nome_modelo, 
+		m.preco,
+		p.created_at 
+		from portgen.portfolios p
+		join pagamentos pg on pg.id = p.id_pgto
+		join modelos m on m.id = p.id_modelo 
+		where 1=1
+		and pg.status = 'approved';
+		"""
+extract_mysql = DataExtractService(query=query_mysql)
 
-# raw = extract_service.extract_data_mysql(query_mysql)
+raw_mysql = extract_mysql.extract_data_mysql()
 
-st.write(raw)
+st.write(raw_gbq)
+st.write(raw_mysql)
