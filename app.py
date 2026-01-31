@@ -5,7 +5,6 @@ import pandas_gbq as bq
 from services.data_extract_service import DataExtractService 
 from services.data_transformation_service import DataTransformationService 
 
-extract_service = DataExtractService()
 
 # gbq
 query_gbq = """
@@ -43,7 +42,9 @@ query_gbq = """
     from agg; 
 
 """
-raw = extract_service.extract_data_gbq(query_gbq, "eco-avenue-461519-f8")
+extract_service = DataExtractService(query=query_gbq)
+
+raw = extract_service.extract_data_gbq(project_id="eco-avenue-461519-f8")
 
 
 # query_mysql = """
