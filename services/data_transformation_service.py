@@ -3,11 +3,9 @@ import pandas as pd
 from services.data_extract_service import DataExtractService
 
 class DataTransformationService:
-    def transformation_data_default(self):
-
+    def transform_data_mysql(self):
         dt = DataExtractService()
-
-        df = dt.extract_data_default()
+        df = dt.extract_data_mysql()
         df = (
             df \
             .assign(
